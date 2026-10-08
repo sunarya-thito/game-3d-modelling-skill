@@ -53,6 +53,15 @@ class ValidateRepoTests(unittest.TestCase):
         errors, _ = validate_repo(root)
         self.assertTrue(any("name must be" in item for item in errors))
 
+    def test_repository_root_may_have_a_different_name(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        source_root = root.with_name("public-repository-name")
+        root.rename(source_root)
+        errors, warnings = validate_repo(source_root, require_parent_name=False)
+        self.assertEqual(errors, [])
+        self.assertEqual(warnings, [])
+
 
 if __name__ == "__main__":
     unittest.main()

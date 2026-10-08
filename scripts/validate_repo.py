@@ -36,7 +36,11 @@ def relative(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
-def validate_frontmatter(skill: Path, errors: list[str]) -> None:
+def validate_frontmatter(
+    skill: Path,
+    errors: list[str],
+    require_parent_name: bool = True,
+) -> None:
     text = skill.read_text(encoding="utf-8")
     match = FRONTMATTER_PATTERN.match(text)
     if not match:
@@ -53,7 +57,7 @@ def validate_frontmatter(skill: Path, errors: list[str]) -> None:
         errors.append(
             "SKILL.md: name must be 1-64 lowercase letters, digits, or single internal hyphens"
         )
-    if name and name != skill.parent.name:
+    if require_parent_name and name and name != skill.parent.name:
         errors.append(
             f"SKILL.md: name {name!r} must match parent directory {skill.parent.name!r}"
         )
@@ -95,14 +99,17 @@ def validate_text(path: Path, root: Path, errors: list[str], warnings: list[str]
                 break
 
 
-def validate_repo(root: Path) -> tuple[list[str], list[str]]:
+def validate_repo(
+    root: Path,
+    require_parent_name: bool = True,
+) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
     skill = root / "SKILL.md"
     if not skill.is_file():
         errors.append("SKILL.md: required file is missing")
     else:
-        validate_frontmatter(skill, errors)
+        validate_frontmatter(skill, errors, require_parent_name=require_parent_name)
     for path in iter_text_files(root):
         validate_text(path, root, errors, warnings)
     return errors, warnings
@@ -112,9 +119,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("root", nargs="?", default=".", type=Path)
     parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    parser.add_argument(
+        "--repository-root",
+        action="store_true",
+        help="allow the source repository name to differ from the installed skill name",
+    )
     args = parser.parse_args(argv)
     root = args.root.resolve()
-    errors, warnings = validate_repo(root)
+    errors, warnings = validate_repo(
+        root,
+        require_parent_name=not args.repository_root,
+    )
     for item in warnings:
         print(f"WARNING: {item}")
     for item in errors:

@@ -38,6 +38,8 @@
 - Material maximum:
 - Texture maximum:
 - Target texel density and tolerance:
+- UV stretch tolerance and minimum gutter:
+- Required texture maps, color spaces, and resolution:
 - LOD/collision requirements:
 - Target device and camera footprint:
 
@@ -61,11 +63,16 @@
 | | | | | |
 
 - Rig type: rigid joints | skinned armature | hybrid | none
-- Animation authority: exported clips | runtime-driven | hybrid | none
+- Animation authority is declared per channel in the table below; the asset may
+  be Blender-authored, runtime-driven, hybrid, or static as a whole.
 - Required clips and frame ranges:
 - Looping and root-motion rules:
 - Representative and extreme test poses:
 - Attachment sockets/markers:
+
+| Channel id | Kind | Owner/property | Authority | Timing/loop | Export support | Runtime parameter/fallback |
+|---|---|---|---|---|---|---|
+| | object/bone/morph/material/texture/visibility/effect | | Blender clip/runtime engine | | native/sidecar/unsupported | |
 
 ## Narrow exceptions
 

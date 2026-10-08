@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "coordinate_system": {
+    "up_axis": "Z",
+    "ground_height": 0.0
+  },
+  "geometry_epsilon": 0.000001,
+  "allow_unlisted_meshes": false,
+  "objects": {
+    "GameRoot": {
+      "origin": {
+        "expected_world": [0.0, 0.0, 0.0],
+        "tolerance": 0.0001
+      },
+      "bounds": {
+        "expected_min": [-1.0, -1.0, 0.0],
+        "expected_max": [1.0, 1.0, 1.0],
+        "tolerance": 0.001
+      },
+      "triangles": {
+        "min": 12,
+        "max": 5000
+      },
+      "materials": {
+        "min": 1,
+        "max": 2
+      },
+      "topology": {
+        "max_boundary_edges": 0,
+        "max_nonmanifold_edges": 0,
+        "max_degenerate_faces": 0,
+        "max_degenerate_triangles": 0,
+        "require_closed_shell": true,
+        "require_positive_volume": true,
+        "max_self_intersections": 0
+      },
+      "ground": {
+        "touch_tolerance": 0.001,
+        "max_penetration": 0.001
+      }
+    },
+    "Attachment": {
+      "origin": {
+        "expected_world": [0.0, 0.0, 0.0],
+        "tolerance": 0.0001
+      },
+      "triangles": {
+        "min": 12,
+        "max": 1000
+      },
+      "materials": {
+        "min": 1,
+        "max": 1
+      },
+      "topology": {
+        "max_boundary_edges": 0,
+        "max_nonmanifold_edges": 0,
+        "max_degenerate_faces": 0,
+        "max_degenerate_triangles": 0,
+        "require_closed_shell": true,
+        "require_positive_volume": true,
+        "max_self_intersections": 0
+      }
+    }
+  },
+  "budgets": {
+    "triangles": {
+      "min": 24,
+      "max": 6000
+    },
+    "materials": {
+      "min": 1,
+      "max": 3
+    },
+    "parts": {
+      "min": 2,
+      "max": 2
+    }
+  },
+  "contacts": [
+    {
+      "name": "attachment-on-root",
+      "a": "Attachment",
+      "b": "GameRoot",
+      "max_gap": 0.002,
+      "min_penetration": 0.0,
+      "max_penetration": 0.005
+    }
+  ],
+  "support": {
+    "ground_nodes": ["GameRoot"],
+    "required_nodes": ["GameRoot", "Attachment"],
+    "edges": [
+      {
+        "child": "Attachment",
+        "support": "GameRoot",
+        "probe": "attachment-on-root"
+      }
+    ]
+  }
+}

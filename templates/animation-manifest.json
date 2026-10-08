@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "asset_id": "public-animation-channel-demo",
+  "export": {
+    "format": "GLB",
+    "fps": 24
+  },
+  "channels": [
+    {
+      "id": "marker-turn",
+      "kind": "object_transform",
+      "authority": "blender_clip",
+      "owner": {
+        "type": "object",
+        "name": "AnimatedMarker"
+      },
+      "property": "rotation_euler",
+      "time": {
+        "unit": "frames",
+        "start": 1,
+        "end": 49,
+        "fps": 24
+      },
+      "loop": "cycle",
+      "root_motion": "none",
+      "format_support": {
+        "GLB": "native"
+      },
+      "runtime_parameter": null,
+      "fallback": {
+        "mode": "rest_transform"
+      }
+    },
+    {
+      "id": "soft-pulse",
+      "kind": "morph_target",
+      "authority": "blender_clip",
+      "owner": {
+        "type": "shape_key",
+        "name": "MorphBadge",
+        "shape_key": "Pulse"
+      },
+      "property": "value",
+      "time": {
+        "unit": "frames",
+        "start": 1,
+        "end": 49,
+        "fps": 24
+      },
+      "loop": "cycle",
+      "root_motion": "none",
+      "format_support": {
+        "GLB": "native"
+      },
+      "runtime_parameter": null,
+      "fallback": {
+        "mode": "basis_shape"
+      }
+    },
+    {
+      "id": "runtime-glow",
+      "kind": "material_parameter",
+      "authority": "runtime_engine",
+      "owner": {
+        "type": "material",
+        "name": "RuntimeSurface"
+      },
+      "property": "emission_strength",
+      "time": {
+        "unit": "seconds",
+        "start": 0.0,
+        "end": 2.0
+      },
+      "loop": "cycle",
+      "root_motion": "none",
+      "format_support": {
+        "GLB": "sidecar"
+      },
+      "runtime_parameter": "demo.emission_strength",
+      "fallback": {
+        "mode": "constant",
+        "value": 0.0
+      }
+    },
+    {
+      "id": "runtime-atlas-frame",
+      "kind": "texture_state",
+      "authority": "runtime_engine",
+      "owner": {
+        "type": "material",
+        "name": "RuntimeSurface"
+      },
+      "property": "atlas_frame",
+      "time": {
+        "unit": "seconds",
+        "start": 0.0,
+        "end": 2.0
+      },
+      "loop": "cycle",
+      "root_motion": "none",
+      "format_support": {
+        "GLB": "sidecar"
+      },
+      "runtime_parameter": "demo.atlas_frame",
+      "fallback": {
+        "mode": "constant",
+        "value": 0
+      }
+    }
+  ]
+}

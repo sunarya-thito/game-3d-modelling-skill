@@ -1,16 +1,17 @@
 ---
-name: 3d-modelling-skill
-description: Plan, model, rig, animate, validate, preview, and review reproducible stylized 3D game assets made with Blender Python. Use for game-ready GLB pipelines, asset contracts, procedural modeling, skeletal or rigid rigs, engine-driven animation, geometry gates, review packets, or auditing an existing 3D asset workflow. Do not use for ordinary image generation or manual-only DCC tutorials.
+name: game-3d-modelling-skill
+description: Plan, model, surface, rig, animate, validate, preview, and review reproducible stylized 3D game models made with Blender Python. Use for game-ready GLB pipelines, model contracts, procedural modeling, skeletal or rigid rigs, engine-driven animation, geometry gates, review packets, or auditing an existing 3D-model workflow. Do not use for UI, audio, ordinary image generation, or manual-only DCC tutorials.
 ---
 
-# Procedural 3D assets
+# Procedural 3D game models
 
-Build reproducible 3D assets as a measured pipeline, not as an untracked sequence of edits.
+Build reproducible 3D game models as a measured pipeline, not as an untracked sequence of edits.
 
 ## Choose the mode
 
 - **Establish or repair a pipeline:** read [references/pipeline.md](references/pipeline.md) and [references/art-contract.md](references/art-contract.md).
-- **Author an asset:** first read [references/reference-intake.md](references/reference-intake.md) and turn the supplied text, images, or both into an explicit brief. Then read [references/quality-bar.md](references/quality-bar.md), [references/modeling-principles.md](references/modeling-principles.md), [references/bpy-authoring-guide.md](references/bpy-authoring-guide.md), and [references/surface-pipeline.md](references/surface-pipeline.md), and use [templates/asset-brief.md](templates/asset-brief.md). If Blender is missing or its command is unknown, read [references/blender-headless.md](references/blender-headless.md). If the project lacks a modeling toolkit, also read [references/blender-helper.md](references/blender-helper.md), inspect [scripts/blender/meshkit.py](scripts/blender/meshkit.py) and [scripts/blender/rigkit.py](scripts/blender/rigkit.py), then choose the closest executable example under [examples/](examples/). Treat every bundled asset as a technique test, not a visual benchmark.
+- **Check what is automated versus engine-dependent:** read [references/capability-status.md](references/capability-status.md).
+- **Author an asset:** first read [references/reference-intake.md](references/reference-intake.md) and turn the supplied text, images, or both into an explicit brief. Then read [references/quality-bar.md](references/quality-bar.md), [references/modeling-principles.md](references/modeling-principles.md), [references/bpy-authoring-guide.md](references/bpy-authoring-guide.md), [references/geometry-gates.md](references/geometry-gates.md), [references/surface-pipeline.md](references/surface-pipeline.md), [references/surface-implementation.md](references/surface-implementation.md), and [references/animation-channels.md](references/animation-channels.md), and use [templates/asset-brief.md](templates/asset-brief.md). If Blender is missing or its command is unknown, read [references/blender-headless.md](references/blender-headless.md). If the project lacks a modeling toolkit, also read [references/blender-helper.md](references/blender-helper.md), inspect [scripts/blender/meshkit.py](scripts/blender/meshkit.py), [scripts/blender/surfacekit.py](scripts/blender/surfacekit.py), [scripts/blender/rigkit.py](scripts/blender/rigkit.py), [scripts/blender/animationkit.py](scripts/blender/animationkit.py), and [scripts/blender/auditkit.py](scripts/blender/auditkit.py), then choose the closest executable example under [examples/](examples/). Treat every bundled asset as a technique test, not a visual benchmark.
 - **Review an asset:** first read [references/review-capabilities.md](references/review-capabilities.md), then follow [references/review-protocol.md](references/review-protocol.md). Use [templates/review-verdict.md](templates/review-verdict.md) only when the reviewer can actually inspect images; otherwise produce a review handoff and keep visual approval pending.
 
 Only read the references needed for the current mode. Treat the project's own art direction and engine constraints as authoritative.
@@ -76,6 +77,10 @@ Before UV work, baking, painting, or export:
 
 Never weaken a global threshold to make one asset pass. Declare a narrow exception by part pair, maximum depth, and reason. Review the exception itself.
 
+Encode binding bounds, budgets, topology, contact probes, and support reachability
+in a geometry contract. Run `scripts/blender/auditkit.py` against evaluated meshes
+and preserve its report; do not substitute an eyeballed pass for a declared gate.
+
 ### 5. Rig and animate for the game
 
 Choose the rig from the deformation need:
@@ -87,11 +92,25 @@ Choose the rig from the deformation need:
 
 Record every required joint or bone name, pivot, axis, parent, and expected range in the asset brief. Validate normalized weights, unweighted vertices, implausible cross-body influence, hierarchy cycles, and required engine names. Test rest, representative, and extreme poses for volume loss, collapsing joints, detached accessories, clipping, and ground penetration.
 
-State whether animation is exported as clips or driven at runtime by the engine. For exported clips, verify clip names, frame ranges, loop behavior, root motion, sampling, and export inclusion. For runtime motion, export a stable unbaked rest rig and verify that engine code finds and moves every named joint as intended.
+Declare authority per animation channel with `templates/animation-manifest.json`.
+Object, bone, and morph channels may be Blender-owned clips when the chosen
+export format carries them. Treat arbitrary shader parameters, emission, UV or
+atlas state, visibility, and effects as runtime-owned unless an explicitly tested
+exporter/importer extension proves otherwise. For exported clips, verify clip
+names, frame ranges, loop behavior, root motion, sampling, and clean re-import.
+For runtime motion, export a stable rest/static state and verify that engine code
+resolves every declared owner and runtime parameter.
 
 ### 6. Run the full build
 
-After the fast gate is clean, unwrap to the target texel density, preserve sufficient chart padding for mipmaps, bake the required maps, paint or assign materials, build the joint hierarchy, export, and write a machine-readable report. Import the result into the target engine; a successful Blender export is not proof of a successful engine asset.
+After the fast gate is clean, unwrap to the target texel density, measure density
+and stretch, preserve sufficient chart padding for mipmaps, bake or generate the
+required maps, assign correct color spaces, and connect them through Principled
+BSDF materials. Use `scripts/blender/surfacekit.py` and
+`examples/textured-surface-workflow.py` as executable patterns. Build the joint
+hierarchy, export, and write machine-readable reports. Import the result into a
+clean Blender scene and then the target engine; a successful export call is not
+proof of a successful shipping asset.
 
 Use one source of truth for the builder. Preview and release builds must not model different geometry.
 
