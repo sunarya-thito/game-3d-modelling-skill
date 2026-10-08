@@ -34,14 +34,14 @@ The bundled example assets are executable technique tests. They are not the visu
 
 Keep the entire repository together. `SKILL.md` depends on `references/`, `scripts/`, `templates/`, and `examples/`.
 
-Replace `OWNER/REPOSITORY` in the commands below with this repository's GitHub path.
+The GitHub repository is named `game-3d-modelling-skill`. The installed Agent Skill remains `3d-modelling-skill`; repository names and skill identifiers do not need to match.
 
 ### Claude Code
 
 Claude's short installer does not require GitHub CLI:
 
 ```bash
-npx skills add https://github.com/OWNER/REPOSITORY --skill 3d-modelling-skill
+npx skills add https://github.com/sunarya-thito/game-3d-modelling-skill --skill 3d-modelling-skill
 ```
 
 For a project-local manual installation, clone or copy the repository to `.claude/skills/3d-modelling-skill/`. For a personal installation available across projects, use `~/.claude/skills/3d-modelling-skill/`.
@@ -56,16 +56,16 @@ The [GitHub CLI skill installer](https://cli.github.com/manual/gh_skill_install)
 
 ```bash
 # OpenAI Codex
-gh skill install OWNER/REPOSITORY SKILL.md --agent codex --scope user
+gh skill install sunarya-thito/game-3d-modelling-skill SKILL.md --agent codex --scope user
 
 # Cursor
-gh skill install OWNER/REPOSITORY SKILL.md --agent cursor --scope user
+gh skill install sunarya-thito/game-3d-modelling-skill SKILL.md --agent cursor --scope user
 
 # GitHub Copilot
-gh skill install OWNER/REPOSITORY SKILL.md --agent github-copilot --scope user
+gh skill install sunarya-thito/game-3d-modelling-skill SKILL.md --agent github-copilot --scope user
 
 # Claude Code, if you prefer GitHub CLI
-gh skill install OWNER/REPOSITORY SKILL.md --agent claude-code --scope user
+gh skill install sunarya-thito/game-3d-modelling-skill SKILL.md --agent claude-code --scope user
 ```
 
 `--scope user` makes the skill available across projects. Run the command from a game repository with `--scope project` when the skill should be local to that project. Update GitHub CLI-managed skills with `gh skill update --all`.
@@ -75,7 +75,7 @@ gh skill install OWNER/REPOSITORY SKILL.md --agent claude-code --scope user
 Gemini CLI has its own installer:
 
 ```bash
-gemini skills install https://github.com/OWNER/REPOSITORY
+gemini skills install https://github.com/sunarya-thito/game-3d-modelling-skill
 ```
 
 Use `--scope workspace` for the current project only. While developing a local checkout, use `gemini skills link /path/to/3d-modelling-skill`. Reload skills in an active session with `/skills reload`.
